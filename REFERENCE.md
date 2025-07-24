@@ -133,6 +133,7 @@ The following parameters are available in the `cvmfs` class:
 * [`repo_proxy`](#-cvmfs--repo_proxy)
 * [`repo_config_enabled`](#-cvmfs--repo_config_enabled)
 * [`repo_testing_enabled`](#-cvmfs--repo_testing_enabled)
+* [`repo_future_enabled`](#-cvmfs--repo_future_enabled)
 * [`repo_gpgcheck`](#-cvmfs--repo_gpgcheck)
 * [`repo_gpgkey`](#-cvmfs--repo_gpgkey)
 * [`repo_manage`](#-cvmfs--repo_manage)
@@ -431,6 +432,14 @@ Default value: `false`
 Data type: `Boolean`
 
 Should the testing repository be enabled.
+
+Default value: `false`
+
+##### <a name="-cvmfs--repo_future_enabled"></a>`repo_future_enabled`
+
+Data type: `Boolean`
+
+Should the future (prerelease) repository be enabled.
 
 Default value: `false`
 
