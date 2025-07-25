@@ -128,6 +128,7 @@ The following parameters are available in the `cvmfs` class:
 * [`cvmfs_max_ttl`](#-cvmfs--cvmfs_max_ttl)
 * [`cvmfs_version`](#-cvmfs--cvmfs_version)
 * [`repo_base`](#-cvmfs--repo_base)
+* [`repo_base_alt`](#-cvmfs--repo_base_alt)
 * [`repo_includepkgs`](#-cvmfs--repo_includepkgs)
 * [`repo_priority`](#-cvmfs--repo_priority)
 * [`repo_proxy`](#-cvmfs--repo_proxy)
@@ -395,7 +396,13 @@ Default value: `'present'`
 
 Data type: `Stdlib::Httpurl`
 
-URL containting stable, testing and config apt or yum repositories. Default in hiera data.
+URL containing stable, testing and config apt or yum repositories. Default in hiera data.
+
+##### <a name="-cvmfs--repo_base_alt"></a>`repo_base_alt`
+
+Data type: `Stdlib::Httpurl`
+
+URL containing stable, Same as repo_base, hosted on a different backend. Default in hiera data.
 
 ##### <a name="-cvmfs--repo_includepkgs"></a>`repo_includepkgs`
 
@@ -439,7 +446,7 @@ Default value: `false`
 
 Data type: `Boolean`
 
-Should the future (prerelease) repository be enabled.
+Should the future (pre-release) repository be enabled.
 
 Default value: `false`
 
