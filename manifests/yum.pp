@@ -3,6 +3,7 @@
 #
 class cvmfs::yum (
   Stdlib::Httpurl $repo_base                                            = $cvmfs::repo_base,
+  Stdlib::Httpurl $repo_base_alt                                        = $cvmfs::repo_base_alt,
   Stdlib::Httpurl $repo_gpgkey                                          = $cvmfs::repo_gpgkey,
   Integer $repo_priority                                                = $cvmfs::repo_priority,
   Boolean $repo_config_enabled                                          = $cvmfs::repo_config_enabled,
