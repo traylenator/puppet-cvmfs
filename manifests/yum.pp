@@ -39,13 +39,13 @@ class cvmfs::yum (
   }
 
   yumrepo { 'cvmfs-testing':
-    descr   => "CVMFS yum testing repository for ${_dir}${facts['os']['release']['major']}. Same binaries as production repo, released earlier. Very stable.",
+    descr   => "CVMFS-testing yum repository for ${_dir}${facts['os']['release']['major']}. Same binaries as production repo, released earlier. Very stable.",
     baseurl => "${repo_base}/cvmfs-testing/${_dir}/${facts['os']['release']['major']}/${facts['os']['architecture']}",
     enabled => $repo_testing_enabled,
   }
 
   yumrepo { 'cvmfs-future':
-    descr   => "CVMFS yum prerelease repository for ${_dir}${facts['os']['release']['major']}. Tagged pre-releases. Stable.",
+    descr   => "CVMFS-future yum repository for ${_dir}${facts['os']['release']['major']}. Tagged pre-releases. Stable.",
     # note the use of repo_base_alt - this is in principle a mirror of repo_base, but prereleases are published there first
     baseurl => "${repo_base_alt}/cvmfs-future/${_dir}/${facts['os']['release']['major']}/${facts['os']['architecture']}",
     enabled => $repo_future_enabled,

@@ -89,7 +89,7 @@
 # @param repo_proxy http proxy for cvmfs yum package repository
 # @param repo_config_enabled Should the config yum repository be enabled
 # @param repo_testing_enabled Should the testing repository be enabled.
-# @param repo_testing_enabled Should the future (prerelease) repository be enabled.
+# @param repo_future_enabled Should the future (pre-release) repository be enabled.
 # @param repo_gpgcheck  set to false to disable GPG checking
 # @param repo_gpgkey Set a custom GPG key for yum repos. Default in hiera data.
 # @param repo_manage Set to false to disable yum or apt repositories management.
