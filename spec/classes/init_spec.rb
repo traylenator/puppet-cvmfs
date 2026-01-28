@@ -442,6 +442,7 @@ describe 'cvmfs' do
                 without_content(%r{CVMFS_CPU_AFFINITY}).
                 without_content(%r{CVMFS_XATTR_PRIVILEGED_GIDS}).
                 without_content(%r{CVMFS_XATTR_PRIVILEGED_XATTRS}).
+                without_content(%r{CVMFS_SEND_INFO_HEADER}).
                 without_content(%r{CVMFS_CACHE_REFCOUNT})
             end
           end
@@ -458,6 +459,7 @@ describe 'cvmfs' do
                 cvmfs_xattr_privileged_gids: [100, 101, 102],
                 cvmfs_xattr_protected_xattrs: ['user.foo', 'user.bar'],
                 cvmfs_cache_refcount: 'no',
+                cvmfs_send_info_header: 'yes',
               }
             end
 
@@ -470,6 +472,7 @@ describe 'cvmfs' do
                 with_content(%r{^CVMFS_WORLD_READABLE='yes'$}).
                 with_content(%r{^CVMFS_CPU_AFFINITY='0,1,2'$}).
                 with_content(%r{^CVMFS_XATTR_PRIVILEGED_GIDS='100,101,102'$}).
+                with_content(%r{^CVMFS_SEND_INFO_HEADER=yes$}).
                 with_content(%r{^CVMFS_XATTR_PROTECTED_XATTRS='user.foo,user.bar'$})
             end
           end
