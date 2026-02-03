@@ -155,6 +155,7 @@ The following parameters are available in the `cvmfs` class:
 * [`cvmfs_env_variables`](#-cvmfs--cvmfs_env_variables)
 * [`default_cvmfs_partsize`](#-cvmfs--default_cvmfs_partsize)
 * [`cvmfs_domain_hash`](#-cvmfs--cvmfs_domain_hash)
+* [`cvmfs_send_info_header`](#-cvmfs--cvmfs_send_info_header)
 * [`cvmfs_instrument_fuse`](#-cvmfs--cvmfs_instrument_fuse)
 * [`cvmfs_repo_list`](#-cvmfs--cvmfs_repo_list)
 * [`cvmfs_alien_cache`](#-cvmfs--cvmfs_alien_cache)
@@ -537,6 +538,14 @@ Data type: `Hash`
 Specify of a hash `cvmfs::domain` types.
 
 Default value: `{}`
+
+##### <a name="-cvmfs--cvmfs_send_info_header"></a>`cvmfs_send_info_header`
+
+Data type: `Optional[Enum['yes','no']]`
+
+Include the cvmfs path of downloaded data in HTTP headers.
+
+Default value: `undef`
 
 ##### <a name="-cvmfs--cvmfs_instrument_fuse"></a>`cvmfs_instrument_fuse`
 
