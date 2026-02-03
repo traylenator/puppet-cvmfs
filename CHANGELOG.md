@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v12.2.0](https://github.com/voxpupuli/puppet-cvmfs/tree/v12.2.0) (2026-02-03)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-cvmfs/compare/v12.1.0...v12.2.0)
+
+**Implemented enhancements:**
+
+- Add fallback baseurl to package repositories [\#213](https://github.com/voxpupuli/puppet-cvmfs/issues/213)
+- Support CVMFS\_SEND\_INFO\_HEADER=yes||no [\#232](https://github.com/voxpupuli/puppet-cvmfs/pull/232) ([traylenator](https://github.com/traylenator))
+- Support failover yum  repositories. [\#228](https://github.com/voxpupuli/puppet-cvmfs/pull/228) ([traylenator](https://github.com/traylenator))
+
 ## [v12.1.0](https://github.com/voxpupuli/puppet-cvmfs/tree/v12.1.0) (2025-10-02)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-cvmfs/compare/v12.0.0...v12.1.0)
