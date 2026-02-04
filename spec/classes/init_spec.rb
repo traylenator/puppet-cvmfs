@@ -169,7 +169,8 @@ describe 'cvmfs' do
                     'ensure' => 'present',
                     'location' => 'https://cvmrepo.s3.cern.ch/cvmrepo/apt',
                     'release' => 'bookworm-prod',
-                    'allow_unsigned' => false,
+                    'allow_insecure' => false,
+                    'allow_unsigned' => nil,
                   }
                 )
               }
@@ -180,7 +181,8 @@ describe 'cvmfs' do
                     'ensure' => 'absent',
                     'location' => 'https://cvmrepo.s3.cern.ch/cvmrepo/apt',
                     'release' => 'bookworm-testing',
-                    'allow_unsigned' => false,
+                    'allow_insecure' => false,
+                    'allow_unsigned' => nil,
                   }
                 )
               }
@@ -336,8 +338,8 @@ describe 'cvmfs' do
               it { is_expected.to contain_yumrepo('cvmfs-config').with_gpgcheck(false) }
               it { is_expected.to contain_yumrepo('cvmfs-config').with_priority(100) }
             else
-              it { is_expected.to contain_apt__source('cvmfs').with_allow_unsigned(true) }
-              it { is_expected.to contain_apt__source('cvmfs-testing').with_allow_unsigned(true) }
+              it { is_expected.to contain_apt__source('cvmfs').with_allow_insecure(true).without_untrusted }
+              it { is_expected.to contain_apt__source('cvmfs-testing').with_allow_insecure(true).without_untrusted }
             end
           end
 
