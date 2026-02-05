@@ -13,7 +13,7 @@ class cvmfs::apt (
   $_location = Array($repo_base,true)[0]
 
   Apt::Source {
-    allow_unsigned => ! $repo_gpgcheck,
+    allow_insecure => ! $repo_gpgcheck,
     comment        => 'CernVM File System',
     location       => $_location,
     key            => {
