@@ -91,7 +91,7 @@ describe 'cvmfs' do
           # cvmfs-config repository should be disable by default.
           #
           case facts[:os]['name']
-          when 'RedHat', 'AlmaLinux', 'Rocky'
+          when 'RedHat', 'AlmaLinux', 'Rocky', 'CentOS'
             case facts[:os]['release']['major']
             when '8'
               it {
@@ -161,32 +161,125 @@ describe 'cvmfs' do
               it { is_expected.to contain_yumrepo('cvmfs-config').with_baseurl('https://cvmrepo.s3.cern.ch/cvmrepo/yum/cvmfs-config/fedora/42/x86_64 https://cvmrepo.web.cern.ch/cvmrepo/yum/cvmfs-config/fedora/42/x86_64') }
             end
           else
+            it {
+              is_expected.to contain_apt__source('cvmfs').with(
+                {
+                  'allow_insecure' => false,
+                  'allow_unsigned' => nil,
+                }
+              )
+            }
+
+            it {
+              is_expected.to contain_apt__source('cvmfs-testing').with(
+                {
+                  'allow_insecure' => false,
+                  'allow_unsigned' => nil,
+                }
+              )
+            }
+
+            it {
+              is_expected.to contain_apt__source('cvmfs-future').with(
+                {
+                  'allow_insecure' => false,
+                  'allow_unsigned' => nil,
+                }
+              )
+            }
+
             case facts[:os]['distro']['codename']
+            when 'bullseye'
+              it {
+                is_expected.to contain_apt__source('cvmfs').with_release('bullseye-prod')
+                is_expected.to contain_apt__source('cvmfs-testing').with_release('bullseye-testing')
+                is_expected.to contain_apt__source('cvmfs-future').with_release('bullseye-future')
+              }
             when 'bookworm'
+              it {
+                is_expected.to contain_apt__source('cvmfs').with_release('bookworm-prod')
+                is_expected.to contain_apt__source('cvmfs-testing').with_release('bookworm-testing')
+                is_expected.to contain_apt__source('cvmfs-future').with_release('bookworm-future')
+              }
+
+            when 'noble'
+              it {
+                is_expected.to contain_apt__source('cvmfs').with_release('noble-prod')
+                is_expected.to contain_apt__source('cvmfs-testing').with_release('noble-testing')
+                is_expected.to contain_apt__source('cvmfs-future').with_release('noble-future')
+              }
+
+            when 'jammy'
+              it {
+                is_expected.to contain_apt__source('cvmfs').with_release('jammy-prod')
+                is_expected.to contain_apt__source('cvmfs-testing').with_release('jammy-testing')
+                is_expected.to contain_apt__source('cvmfs-future').with_release('jammy-future')
+              }
+
+            when 'focal'
+              it {
+                is_expected.to contain_apt__source('cvmfs').with_release('focal-prod')
+                is_expected.to contain_apt__source('cvmfs-testing').with_release('focal-testing')
+                is_expected.to contain_apt__source('cvmfs-future').with_release('focal-future')
+              }
+            when 'trixie'
+              it {
+                is_expected.to contain_apt__source('cvmfs').with_release(['trixie-prod'])
+                is_expected.to contain_apt__source('cvmfs-testing').with_release(['trixie-testing'])
+                is_expected.to contain_apt__source('cvmfs-future').with_release(['trixie-future'])
+              }
+
+            else
+              raise("Debian family codename, #{facts[:os]['distro']['codename']} is unknown to tests, add that case")
+            end
+            case [facts[:os]['name'], facts[:os]['release']['major']]
+            when %w[Debian 11], %w[Debian 12], ['Ubuntu', '20.04'], ['Ubuntu', '22.04'], ['Ubuntu', '24.04']
               it {
                 is_expected.to contain_apt__source('cvmfs').with(
                   {
-                    'ensure' => 'present',
-                    'location' => 'https://cvmrepo.s3.cern.ch/cvmrepo/apt',
-                    'release' => 'bookworm-prod',
-                    'allow_insecure' => false,
-                    'allow_unsigned' => nil,
+                    ensure: 'present',
+                    location: 'https://cvmrepo.s3.cern.ch/cvmrepo/apt',
+                  }
+                )
+                is_expected.to contain_apt__source('cvmfs-testing').with(
+                  {
+                    ensure: 'absent',
+                    location: 'https://cvmrepo.s3.cern.ch/cvmrepo/apt',
+                  }
+                )
+                is_expected.to contain_apt__source('cvmfs-future').with(
+                  {
+                    ensure: 'absent',
+                    location: 'https://cvmrepo.s3.cern.ch/cvmrepo/apt',
                   }
                 )
               }
-
+            else
               it {
+                is_expected.to contain_apt__source('cvmfs').with(
+                  {
+                    ensure: 'present',
+                    enabled: true,
+                    location: ['https://cvmrepo.s3.cern.ch/cvmrepo/apt'],
+                  }
+                )
                 is_expected.to contain_apt__source('cvmfs-testing').with(
                   {
-                    'ensure' => 'absent',
-                    'location' => 'https://cvmrepo.s3.cern.ch/cvmrepo/apt',
-                    'release' => 'bookworm-testing',
-                    'allow_insecure' => false,
-                    'allow_unsigned' => nil,
+                    ensure: 'present',
+                    enabled: false,
+                    location: ['https://cvmrepo.s3.cern.ch/cvmrepo/apt'],
+                  }
+                )
+                is_expected.to contain_apt__source('cvmfs-future').with(
+                  {
+                    ensure: 'present',
+                    enabled: false,
+                    location: ['https://cvmrepo.s3.cern.ch/cvmrepo/apt'],
                   }
                 )
               }
             end
+
           end
 
           context 'with repo_future_enabled true' do
@@ -207,7 +300,8 @@ describe 'cvmfs' do
               it {
                 is_expected.to contain_apt__source('cvmfs-future').with(
                   {
-                    'ensure' => 'present',
+                    'ensure'  => 'present',
+                    'enabled' => true,
                   }
                 )
               }
@@ -274,8 +368,20 @@ describe 'cvmfs' do
               it { is_expected.to contain_yumrepo('cvmfs-testing').with_baseurl(%r{^http://example.org/base/cvmfs-testing/(EL|fedora)/\d+/x86_64$}) }
               it { is_expected.to contain_yumrepo('cvmfs-config').with_baseurl(%r{^http://example.org/base/cvmfs-config/(EL|fedora)/\d+/x86_64$}) }
             else
-              it { is_expected.to contain_apt__source('cvmfs').with_location('http://example.org/base') }
-              it { is_expected.to contain_apt__source('cvmfs-testing').with_location('http://example.org/base') }
+              case [facts[:os]['name'], facts[:os]['release']['major']]
+              when %w[Debian 11], %w[Debian 12], ['Ubuntu', '20.04'], ['Ubuntu', '22.04'], ['Ubuntu', '24.04']
+                it {
+                  is_expected.to contain_apt__source('cvmfs').with_location('http://example.org/base')
+                  is_expected.to contain_apt__source('cvmfs-testing').with_location('http://example.org/base')
+                  is_expected.to contain_apt__source('cvmfs-future').with_location('http://example.org/base')
+                }
+              else
+                it {
+                  is_expected.to contain_apt__source('cvmfs').with_location(['http://example.org/base'])
+                  is_expected.to contain_apt__source('cvmfs-testing').with_location(['http://example.org/base'])
+                  is_expected.to contain_apt__source('cvmfs-future').with_location(['http://example.org/base'])
+                }
+              end
             end
           end
 
@@ -291,8 +397,8 @@ describe 'cvmfs' do
               it { is_expected.to contain_yumrepo('cvmfs-testing').with_baseurl(%r{^http://example.org/base/cvmfs-testing/(EL|fedora)/\d+/x86_64$}) }
               it { is_expected.to contain_yumrepo('cvmfs-config').with_baseurl(%r{^http://example.org/base/cvmfs-config/(EL|fedora)/\d+/x86_64$}) }
             else
-              it { is_expected.to contain_apt__source('cvmfs').with_location('http://example.org/base') }
-              it { is_expected.to contain_apt__source('cvmfs-testing').with_location('http://example.org/base') }
+              it { is_expected.to contain_apt__source('cvmfs').with_location(['http://example.org/base']) }
+              it { is_expected.to contain_apt__source('cvmfs-testing').with_location(['http://example.org/base']) }
             end
           end
 
@@ -355,11 +461,20 @@ describe 'cvmfs' do
               it { is_expected.to contain_yumrepo('cvmfs-testing').with_gpgkey('http://example.org/key.gpg') }
               it { is_expected.to contain_yumrepo('cvmfs-config').with_gpgkey('http://example.org/key.gpg') }
             else
-              it {
-                is_expected.to contain_apt__source('cvmfs').with_key(
-                  { 'ensure' => 'refreshed', 'id' => 'FD80468D49B3B24C341741FC8CE0A76C497EA957', 'source' => 'http://example.org/key.gpg' }
-                )
-              }
+              case [facts[:os]['name'], facts[:os]['release']['major']]
+              when %w[Debian 11], %w[Debian 12], ['Ubuntu', '20.04'], ['Ubuntu', '22.04'], ['Ubuntu', '24.04']
+                it {
+                  is_expected.to contain_apt__source('cvmfs').with_key(
+                    { 'ensure' => 'refreshed', 'id' => 'FD80468D49B3B24C341741FC8CE0A76C497EA957', 'source' => 'http://example.org/key.gpg' }
+                  )
+                  is_expected.to contain_apt__source('cvmfs').without_keyring
+                }
+              else
+                it {
+                  is_expected.to contain_apt__source('cvmfs').with_keyring('/etc/apt/keyrings/cernvm.gpg')
+                  is_expected.to contain_apt__source('cvmfs').without_key
+                }
+              end
             end
           end
 
