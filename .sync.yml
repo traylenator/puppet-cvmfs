@@ -6,6 +6,6 @@ spec/spec_helper_acceptance.rb:
 # autofs module does not work with rootless podman
 # try again post Ubuntu 24.04, podman 4 github runners
 #
-github/workflows/ci.yml:
+.github/workflows/ci.yml:
   with:
     beaker_hypervisor: 'container_docker'
