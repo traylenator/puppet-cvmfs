@@ -151,15 +151,6 @@ describe 'cvmfs' do
             end
           when 'Fedora'
             case facts[:os]['release']['major']
-            when '41'
-              it {
-                is_expected.to contain_yumrepo('cvmfs').
-                  with_baseurl('https://cvmrepo.s3.cern.ch/cvmrepo/yum/cvmfs/fedora/41/x86_64 https://cvmrepo.web.cern.ch/cvmrepo/yum/cvmfs/fedora/41/x86_64')
-                is_expected.to contain_yumrepo('cvmfs-testing').
-                  with_baseurl('https://cvmrepo.s3.cern.ch/cvmrepo/yum/cvmfs-testing/fedora/41/x86_64 https://cvmrepo.web.cern.ch/cvmrepo/yum/cvmfs-testing/fedora/41/x86_64')
-                is_expected.to contain_yumrepo('cvmfs-config').
-                  with_baseurl('https://cvmrepo.s3.cern.ch/cvmrepo/yum/cvmfs-config/fedora/41/x86_64 https://cvmrepo.web.cern.ch/cvmrepo/yum/cvmfs-config/fedora/41/x86_64')
-              }
             when '42'
               it {
                 is_expected.to contain_yumrepo('cvmfs').
@@ -235,12 +226,6 @@ describe 'cvmfs' do
                 is_expected.to contain_apt__source('cvmfs-future').with_release('jammy-future')
               }
 
-            when 'focal'
-              it {
-                is_expected.to contain_apt__source('cvmfs').with_release('focal-prod')
-                is_expected.to contain_apt__source('cvmfs-testing').with_release('focal-testing')
-                is_expected.to contain_apt__source('cvmfs-future').with_release('focal-future')
-              }
             when 'trixie'
               it {
                 is_expected.to contain_apt__source('cvmfs').with_release(['trixie-prod'])
@@ -252,7 +237,7 @@ describe 'cvmfs' do
               raise("Debian family codename, #{facts[:os]['distro']['codename']} is unknown to tests, add that case")
             end
             case [facts[:os]['name'], facts[:os]['release']['major']]
-            when %w[Debian 11], %w[Debian 12], ['Ubuntu', '20.04'], ['Ubuntu', '22.04'], ['Ubuntu', '24.04']
+            when %w[Debian 11], %w[Debian 12], ['Ubuntu', '22.04'], ['Ubuntu', '24.04']
               it {
                 is_expected.to contain_apt__source('cvmfs').with(
                   {
@@ -388,7 +373,7 @@ describe 'cvmfs' do
               it { is_expected.to contain_yumrepo('cvmfs-config').with_baseurl(%r{^http://example.org/base/cvmfs-config/(EL|fedora)/\d+/x86_64$}) }
             else
               case [facts[:os]['name'], facts[:os]['release']['major']]
-              when %w[Debian 11], %w[Debian 12], ['Ubuntu', '20.04'], ['Ubuntu', '22.04'], ['Ubuntu', '24.04']
+              when %w[Debian 11], %w[Debian 12], ['Ubuntu', '22.04'], ['Ubuntu', '24.04']
                 it {
                   is_expected.to contain_apt__source('cvmfs').with_location('http://example.org/base')
                   is_expected.to contain_apt__source('cvmfs-testing').with_location('http://example.org/base')
@@ -481,7 +466,7 @@ describe 'cvmfs' do
               it { is_expected.to contain_yumrepo('cvmfs-config').with_gpgkey('http://example.org/key.gpg') }
             else
               case [facts[:os]['name'], facts[:os]['release']['major']]
-              when %w[Debian 11], %w[Debian 12], ['Ubuntu', '20.04'], ['Ubuntu', '22.04'], ['Ubuntu', '24.04']
+              when %w[Debian 11], %w[Debian 12], ['Ubuntu', '22.04'], ['Ubuntu', '24.04']
                 it {
                   is_expected.to contain_apt__source('cvmfs').with_key(
                     { 'ensure' => 'refreshed', 'id' => 'FD80468D49B3B24C341741FC8CE0A76C497EA957', 'source' => 'http://example.org/key.gpg' }
