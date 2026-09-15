@@ -8,7 +8,7 @@
 
 require 'yaml'
 Facter.add(:cvmfspartsize) do
-  @df_cmd = Facter::Util::Resolution.which('df')
+  @df_cmd = Facter::Core::Execution.which('df')
   confine { @df_cmd }
   setcode do
     if File.exist?('/etc/cvmfs/cvmfsfacts.yaml')
